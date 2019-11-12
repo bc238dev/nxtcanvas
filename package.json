@@ -1,0 +1,21 @@
+{
+  "name": "nxtcanvas",
+  "version": "1.0.0",
+  "description": "Next canvas with extended functionality.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-bc238dev:bc238dev/nxtcanvas.git"
+  },
+  "keywords": [
+    "next",
+    "html",
+    "html5",
+    "canvas"
+  ],
+  "author": "bc238dev",
+  "license": "MIT"
+}
