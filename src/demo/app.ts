@@ -42,6 +42,7 @@ class Ball extends Node {
 }
 
 const canvas1 = new NxtCanvas("#canvas1")
+const canvas2 = new NxtCanvas("#canvas2")
 const width = window.innerWidth
 const height = window.innerHeight
 const imgBall1 = new Image()
@@ -52,16 +53,19 @@ const nofBalls = 100
 const balls: Ball[] = []
 const screenConstraint = { x: 0, y: 0, width: width, height: height }
 const singleBall = new Ball(imgBall1, width / 2, height / 2, 75, 75)
-const btn0 = document.getElementById("btn0")
 const btn1 = document.getElementById("btn1")
 const btn2 = document.getElementById("btn2")
 const btn3 = document.getElementById("btn3")
 const btn4 = document.getElementById("btn4")
+const cb1 = document.getElementById("cb1")
 let alwaysClearBackgroud = true
 let animate = true
 
 canvas1.setWidth(width)
 canvas1.setHeight(height)
+canvas2.setWidth(width / 4)
+canvas2.setHeight(height / 4)
+
 imgBall1.src = require("./images/soccer-ball.png")
 imgBall2.src = require("./images/basket-ball.png")
 imgBall3.src = require("./images/volley-ball.png")
@@ -78,6 +82,7 @@ for (let i = 0; i < nofBalls; i++) {
 const clearBackground = () => {
   if (alwaysClearBackgroud) {
     canvas1.clear()
+    canvas2.clear()
     canvas1.removeShadowBlur()
   }
 }
@@ -137,6 +142,8 @@ const drawSample3 = () => {
     .setShadowBlur(2, "#333")
     .setFont("20pt Times")
     .fillString(width / 4 + 20, height / 1.1 + 30, "This is a test...")
+
+  canvas2.clear()
 }
 
 const drawSample4 = () => {
@@ -146,10 +153,6 @@ const drawSample4 = () => {
 
 const drawingFunctions = [drawBalls, drawLines, drawSample3, drawSample4]
 let currentDrawingFunction = drawingFunctions[0]
-
-btn0.onclick = () => {
-  alwaysClearBackgroud = !alwaysClearBackgroud
-}
 
 btn1.onclick = () => {
   canvas1.clear()
@@ -175,9 +178,14 @@ btn4.onclick = () => {
   currentDrawingFunction = drawingFunctions[3]
 }
 
+cb1.onchange = () => {
+  alwaysClearBackgroud = !alwaysClearBackgroud
+}
+
 setInterval(() => {
   if (!animate) return
   currentDrawingFunction()
+  canvas2.drawCanvas(canvas1, 0, 0, width / 4, height / 4)
 }, 33)
 
 canvas1.addMouseDoubleClickHandler(e => {

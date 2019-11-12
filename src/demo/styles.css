@@ -18,6 +18,7 @@ html {
   padding: 10px;
   text-align: center;
   z-index: 1;
+  background-color: rgba(0, 0, 125, 0.25);
 }
 
 #canvas1 {
@@ -25,5 +26,13 @@ html {
   background-color: white;
   top: 0;
   left: 0;
-  z-index: 0;
+}
+
+#canvas2 {
+  position: absolute;
+  background-color: white;
+  top: 100px;
+  left: 30px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px #333;
 }

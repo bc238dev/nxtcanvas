@@ -345,11 +345,9 @@ export class NxtCanvas {
     return this.canvasElement.toDataURL()
   }
 
-  drawCanvasOnCanvas(canvas: NxtCanvas, x: number, y: number, w: number, h: number, rotation = 0): NxtCanvas {
+  drawCanvas(canvas: NxtCanvas, x: number, y: number, w: number, h: number): NxtCanvas {
     const otherCanvasElement = canvas.getCanvasElement()
-    this.ctx.rotate(rotation)
     this.ctx.drawImage(otherCanvasElement, x, y, w, h)
-    this.ctx.rotate(-rotation)
     return this
   }
 
