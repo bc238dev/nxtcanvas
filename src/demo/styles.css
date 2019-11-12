@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.container {
+  position: relative;
+}
+
+.control-panel {
+  position: relative;
+  padding: 10px;
+  text-align: center;
+  z-index: 1;
+}
+
+#canvas1 {
+  position: absolute;
+  background-color: white;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}

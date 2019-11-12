@@ -1,7 +1,7 @@
 export interface ErrorCodeMap {
-  code: number;
-  key?: string;
-  msg?: string;
+  code: number
+  key?: string
+  msg?: string
 }
 
 export const NxtCanvasErrorCode: { [key in keyof ErrorCodes]: ErrorCodeMap } = {
@@ -16,6 +16,6 @@ export interface ErrorCodes {
 
 export class NxtCanvasError extends Error {
   constructor(public errorMap: ErrorCodeMap, detail?: string) {
-    super(`${errorMap.msg}: ${detail}`)
+    super(`${errorMap.msg} ${detail ? `: ${detail}` : ""}`)
   }
 }

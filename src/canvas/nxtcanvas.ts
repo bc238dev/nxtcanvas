@@ -71,12 +71,12 @@ export class NxtCanvas {
     return this
   }
 
-  setDrawColor(r: number, g: number, b: number, a: number): NxtCanvas {
+  setDrawColor(r: number, g: number, b: number, a = 1): NxtCanvas {
     this.ctx.strokeStyle = this.getRGBAColor(r, g, b, a)
     return this
   }
 
-  setFillColor(r: number, g: number, b: number, a: number): NxtCanvas {
+  setFillColor(r: number, g: number, b: number, a = 1): NxtCanvas {
     this.ctx.fillStyle = this.getRGBAColor(r, g, b, a)
     return this
   }
@@ -86,6 +86,14 @@ export class NxtCanvas {
     const g = Math.random()
     const b = Math.random()
     this.setDrawColor(r, g, b, alpha)
+    return this
+  }
+
+  setRandomFillColor(alpha = 0.75): NxtCanvas {
+    const r = Math.random()
+    const g = Math.random()
+    const b = Math.random()
+    this.setFillColor(r, g, b, alpha)
     return this
   }
 
@@ -123,7 +131,7 @@ export class NxtCanvas {
     return this
   }
 
-  drawLine(x1, y1, x2, y2): NxtCanvas {
+  drawLine(x1: number, y1: number, x2: number, y2: number): NxtCanvas {
     const ctx = this.ctx
     ctx.beginPath()
     ctx.moveTo(x1, y1)
@@ -132,7 +140,7 @@ export class NxtCanvas {
     return this
   }
 
-  drawPolygon(points): NxtCanvas {
+  drawPolygon(points: IPoint[]): NxtCanvas {
     const ctx = this.ctx
     const len = points.length
     let p = points[0]
@@ -150,7 +158,7 @@ export class NxtCanvas {
     return this
   }
 
-  fillPolygon(points): NxtCanvas {
+  fillPolygon(points: IPoint[]): NxtCanvas {
     const ctx = this.ctx
     const len = points.length
     let p = points[0]
@@ -185,28 +193,25 @@ export class NxtCanvas {
     return this
   }
 
-  changeGlobalAlpha(alpha): NxtCanvas {
+  changeGlobalAlpha(alpha: number): NxtCanvas {
     this.ctx.globalAlpha = alpha
 
     return this
   }
 
-  setShadowBlur(blurSize, color): NxtCanvas {
+  setShadowBlur(blurSize: number, color: string): NxtCanvas {
     this.ctx.shadowBlur = blurSize
     this.ctx.shadowColor = color
-
     return this
   }
 
   removeShadowBlur(): NxtCanvas {
     this.ctx.shadowBlur = 0
-
     return this
   }
 
-  drawBezier(p1, p2, cp1, cp2): NxtCanvas {
+  drawBezier(p1: IPoint, p2: IPoint, cp1: IPoint, cp2: IPoint): NxtCanvas {
     const ctx = this.ctx
-
     ctx.beginPath()
     ctx.moveTo(p1.x, p1.y)
     ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, p2.x, p2.y)
@@ -215,9 +220,8 @@ export class NxtCanvas {
     return this
   }
 
-  drawCircle(x, y, radius): NxtCanvas {
+  drawCircle(x: number, y: number, radius: number): NxtCanvas {
     const ctx = this.ctx
-
     ctx.beginPath()
     ctx.arc(x, y, radius, 0, 2 * Math.PI)
     ctx.stroke()
@@ -225,9 +229,8 @@ export class NxtCanvas {
     return this
   }
 
-  fillCircle(x, y, radius): NxtCanvas {
+  fillCircle(x: number, y: number, radius: number): NxtCanvas {
     const ctx = this.ctx
-
     ctx.beginPath()
     ctx.arc(x, y, radius, 0, 2 * Math.PI)
     ctx.fill()
@@ -235,46 +238,32 @@ export class NxtCanvas {
     return this
   }
 
-  drawImage(img, x, y, w?, h?, rotation = 0): NxtCanvas {
+  drawImage(img: HTMLImageElement, x: number, y: number, w?: number, h?: number, rotation = 0): NxtCanvas {
     const ctx = this.ctx
-    let displayImage
-
-    if (img instanceof Image) {
-      displayImage = img
-    } else {
-      displayImage = new Image()
-      displayImage.src = img
-    }
+    const rotationInRadian = (rotation * Math.PI) / 180
+    const displayImage = img
     w = w || displayImage.width
     h = h || displayImage.height
-
-    const rotationInRadian = (rotation * Math.PI) / 180
-
     ctx.save()
     ctx.translate(x, y)
     ctx.rotate(rotationInRadian)
     ctx.drawImage(displayImage, -w / 2, -h / 2, w, h)
     ctx.restore()
-
     return this
   }
 
   clear(): NxtCanvas {
     const ctx = this.ctx
-
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
     return this
   }
 
   rotate(rotation, x = 0, y = 0): NxtCanvas {
     const ctx = this.ctx
     const rotationInRadian = (rotation * Math.PI) / 180
-
     ctx.translate(x, y)
     ctx.rotate(rotationInRadian)
     ctx.translate(-x, -y)
-
     return this
   }
 
@@ -314,6 +303,12 @@ export class NxtCanvas {
     return this
   }
 
+  // Font example: 20pt Times, etc.
+  setFont(font: string): NxtCanvas {
+    this.ctx.font = font
+    return this
+  }
+
   fillString(x: number, y: number, msg: string): NxtCanvas {
     this.ctx.fillText(msg, x, y)
     return this
@@ -339,7 +334,6 @@ export class NxtCanvas {
     const rect = this.canvasElement.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-
     return { x, y }
   }
 
