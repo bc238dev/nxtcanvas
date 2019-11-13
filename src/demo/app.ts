@@ -66,9 +66,9 @@ canvas1.setHeight(height)
 canvas2.setWidth(width / 4)
 canvas2.setHeight(height / 4)
 
-imgBall1.src = require("./images/soccer-ball.png")
-imgBall2.src = require("./images/basket-ball.png")
-imgBall3.src = require("./images/volley-ball.png")
+imgBall1.src = require("./images/soccerball.png")
+imgBall2.src = require("./images/basketball.png")
+imgBall3.src = require("./images/volleyball.png")
 
 for (let i = 0; i < nofBalls; i++) {
   const x = 100 + 0.5 * width * Math.random()
