@@ -25,15 +25,23 @@ export class NxtCanvas {
   private canvasElement: HTMLCanvasElement
   private ctx: CanvasRenderingContext2D
 
-  constructor(selector: string) {
-    const rootEl = document.querySelector(selector)
+  constructor(selectorOrObject: string | HTMLElement) {
+    let rootEl
+
+    if (typeof selectorOrObject === "object") {
+      rootEl = selectorOrObject
+    } else {
+      const selector = selectorOrObject as string
+      rootEl = document.querySelector(selector)
+    }
 
     if (!rootEl) {
       throw new NxtCanvasError(NxtCanvasErrorCode.NoRootElement)
     }
 
-    if (rootEl.localName == "canvas") this.canvasElement = rootEl as HTMLCanvasElement
-    else {
+    if (rootEl.localName == "canvas") {
+      this.canvasElement = rootEl as HTMLCanvasElement
+    } else {
       this.canvasElement = document.createElement("canvas")
       rootEl.appendChild(this.canvasElement)
     }
