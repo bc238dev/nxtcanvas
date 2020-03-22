@@ -7,6 +7,11 @@ export interface IPoint {
   y: number
 }
 
+export interface ISize {
+  width: number
+  height: number
+}
+
 export interface IMouseEventCallbackArgs {
   target: any
   x: number
@@ -64,6 +69,25 @@ export class NxtCanvas {
 
   getHeight(): number {
     return this.canvasElement.height
+  }
+
+  getSize(): ISize {
+    return {
+      width: this.canvasElement.width,
+      height: this.canvasElement.height,
+    }
+  }
+
+  get width(): number {
+    return this.getWidth()
+  }
+
+  get height(): number {
+    return this.getHeight()
+  }
+
+  get size(): ISize {
+    return this.getSize()
   }
 
   getRGBAColor(r: number, g: number, b: number, a: number): string {
