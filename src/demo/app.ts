@@ -152,7 +152,7 @@ const drawSample3 = () => {
 const drawSample4 = () => {
   clearBackground()
   canvas1.setFillColor(0.15, 0.15, 0.25, 1)
-  canvas1.fillRectangle(0, 0, canvas1.getWidth(), canvas1.getHeight())
+  canvas1.fillBackground()
   singleBall.drawOn(canvas1)
 }
 
