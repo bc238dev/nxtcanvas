@@ -43,6 +43,7 @@ class Ball extends Node {
 
 const canvas1 = new NxtCanvas("#canvas1")
 const canvas2 = new NxtCanvas("#canvas2")
+const canvas3 = new NxtCanvas("#canvas3")
 const width = window.innerWidth
 const height = window.innerHeight
 const imgBall1 = new Image()
@@ -65,6 +66,8 @@ canvas1.setWidth(width)
 canvas1.setHeight(height)
 canvas2.setWidth(width / 4)
 canvas2.setHeight(height / 4)
+canvas3.setWidth(width / 4)
+canvas3.setHeight(height / 4)
 
 imgBall1.src = require("./images/soccerball.png")
 imgBall2.src = require("./images/basketball.png")
@@ -148,6 +151,8 @@ const drawSample3 = () => {
 
 const drawSample4 = () => {
   clearBackground()
+  canvas1.setFillColor(0.15, 0.15, 0.25, 1)
+  canvas1.fillRectangle(0, 0, canvas1.getWidth(), canvas1.getHeight())
   singleBall.drawOn(canvas1)
 }
 
@@ -182,10 +187,26 @@ cb1.onchange = () => {
   alwaysClearBackgroud = !alwaysClearBackgroud
 }
 
+const invertPixels = pixels => {
+  let newPixels = []
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    newPixels[i] = 255 - pixels[i] // red
+    newPixels[i + 1] = 255 - pixels[i + 1] // green
+    newPixels[i + 2] = 255 - pixels[i + 2] // blue
+    newPixels[i + 3] = pixels[i + 3]
+  }
+
+  return newPixels
+}
+
 setInterval(() => {
   if (!animate) return
   currentDrawingFunction()
   canvas2.drawCanvas(canvas1, 0, 0, width / 4, height / 4)
+  let pixels = canvas2.getPixels()
+  let invertedPixels = invertPixels(pixels)
+  canvas3.setPixels(invertedPixels)
 }, 33)
 
 canvas1.addMouseDoubleClickHandler(e => {
