@@ -319,6 +319,10 @@ export class NxtCanvas {
     return this
   }
 
+  fillBackground() {
+    this.fillRectangle(0, 0, this.width, this.height)
+  }
+
   drawEllipse(x: number, y: number, w: number, h: number, angleOffset1 = 0, angleOffset2 = 0, angleDelta = 0.1): NxtCanvas {
     const ctx = this.ctx
     const startX = x + w * Math.cos(angleOffset1)
