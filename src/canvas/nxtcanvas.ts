@@ -359,6 +359,23 @@ export class NxtCanvas {
     return this
   }
 
+  getPixels() {
+    const imageData = this.ctx.getImageData(0, 0, this.getWidth(), this.getHeight())
+    return imageData.data
+  }
+
+  setPixels(pixels) {
+    const imageData = this.ctx.createImageData(this.getWidth(), this.getHeight())
+    const data = imageData.data
+    const len = Math.min(pixels.length, data.length)
+
+    for (let i = 0; i < len; i++) {
+      data[i] = pixels[i]
+    }
+
+    this.ctx.putImageData(imageData, 0, 0)
+  }
+
   // --- Event Handlers ---
   addMouseClickHandler(callback: Handler4MouseEvent) {
     return this.addGenericMouseEventListener("click", callback)
