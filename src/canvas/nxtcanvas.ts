@@ -85,6 +85,12 @@ export class NxtCanvas {
     }
   }
 
+  setSize(width: number, height: number) {
+    this.canvasElement.width = width
+    this.canvasElement.height = height
+    return this
+  }
+
   get width(): number {
     return this.getWidth()
   }
@@ -95,6 +101,18 @@ export class NxtCanvas {
 
   get size(): ISize {
     return this.getSize()
+  }
+
+  set width(val: number) {
+    this.setWidth(val)
+  }
+
+  set height(val: number) {
+    this.setHeight(val)
+  }
+
+  set size(val: ISize) {
+    this.setSize(val.width, val.height)
   }
 
   getRGBAColor(r: number, g: number, b: number, a: number): string {
@@ -398,12 +416,12 @@ export class NxtCanvas {
     return this
   }
 
-  getPixels() {
+  getPixels(): number[] {
     const imageData = this.ctx.getImageData(0, 0, this.getWidth(), this.getHeight())
-    return imageData.data
+    return Array.from(imageData.data)
   }
 
-  setPixels(pixels) {
+  setPixels(pixels: number[]) {
     const imageData = this.ctx.createImageData(this.getWidth(), this.getHeight())
     const data = imageData.data
     const len = Math.min(pixels.length, data.length)
