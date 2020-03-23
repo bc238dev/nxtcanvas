@@ -12,6 +12,13 @@ export interface ISize {
   height: number
 }
 
+export interface IColor {
+  r: number
+  g: number
+  b: number
+  a?: number
+}
+
 export interface IMouseEventCallbackArgs {
   target: any
   x: number
@@ -319,7 +326,11 @@ export class NxtCanvas {
     return this
   }
 
-  fillBackground() {
+  fillBackground(color?: IColor) {
+    if (color) {
+      let { r, g, b, a } = color
+      this.setFillColor(r, g, b, a)
+    }
     this.fillRectangle(0, 0, this.width, this.height)
   }
 
