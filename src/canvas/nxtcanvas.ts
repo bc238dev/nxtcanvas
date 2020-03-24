@@ -19,6 +19,13 @@ export interface IColor {
   a?: number
 }
 
+export interface IPixel {
+  r: number
+  g: number
+  b: number
+  a: number
+}
+
 export interface IMouseEventCallbackArgs {
   target: any
   x: number
@@ -36,6 +43,7 @@ export type Handler4TouchEvent = (args: ITouchEventCallbackArgs) => void
 export class NxtCanvas {
   private canvasElement: HTMLCanvasElement
   private ctx: CanvasRenderingContext2D
+  private cachedPixels: IPixel[]
 
   constructor(selectorOrObject: string | HTMLElement) {
     let rootEl
@@ -352,6 +360,16 @@ export class NxtCanvas {
     this.fillRectangle(0, 0, this.width, this.height)
   }
 
+  fillBackgroundWhite() {
+    this.setFillColor(1, 1, 1)
+    this.fillRectangle(0, 0, this.width, this.height)
+  }
+
+  fillBackgroundBlack() {
+    this.setFillColor(0, 0, 0)
+    this.fillRectangle(0, 0, this.width, this.height)
+  }
+
   drawEllipse(x: number, y: number, w: number, h: number, angleOffset1 = 0, angleOffset2 = 0, angleDelta = 0.1): NxtCanvas {
     const ctx = this.ctx
     const startX = x + w * Math.cos(angleOffset1)
@@ -397,8 +415,8 @@ export class NxtCanvas {
 
   getPosition(event): IPoint {
     const rect = this.canvasElement.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
+    const x = Math.floor(event.clientX - rect.left)
+    const y = Math.floor(event.clientY - rect.top)
     return { x, y }
   }
 
@@ -416,18 +434,56 @@ export class NxtCanvas {
     return this
   }
 
-  getPixels(): number[] {
+  getRawPixelsData(): number[] {
     const imageData = this.ctx.getImageData(0, 0, this.getWidth(), this.getHeight())
     return Array.from(imageData.data)
   }
 
-  setPixels(pixels: number[]) {
+  getPixels(): IPixel[] {
+    const data = this.getRawPixelsData()
+    const pixels: IPixel[] = []
+
+    for (let i = 0; i < data.length; i += 4) {
+      pixels.push({
+        r: data[i],
+        g: data[i + 1],
+        b: data[i + 2],
+        a: data[i + 3],
+      })
+    }
+    this.cachedPixels = pixels
+
+    return pixels
+  }
+
+  getPixelAt(x: number, y: number, useCache = true) {
+    let pixels, index
+
+    if (useCache) {
+      pixels = this.cachedPixels ? this.cachedPixels : this.getPixels()
+    } else {
+      pixels = this.getPixels()
+    }
+
+    x = Math.floor(x)
+    y = Math.floor(y)
+    index = x + y * this.width
+
+    return pixels[index]
+  }
+
+  setPixels(pixels: IPixel[]) {
     const imageData = this.ctx.createImageData(this.getWidth(), this.getHeight())
     const data = imageData.data
-    const len = Math.min(pixels.length, data.length)
+    const len = Math.min(pixels.length, data.length / 4)
+    let dataIndex = 0
 
     for (let i = 0; i < len; i++) {
-      data[i] = pixels[i]
+      const { r, g, b, a } = pixels[i]
+      data[dataIndex++] = r
+      data[dataIndex++] = g
+      data[dataIndex++] = b
+      data[dataIndex++] = a
     }
 
     this.ctx.putImageData(imageData, 0, 0)
